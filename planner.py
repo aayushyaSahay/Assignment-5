@@ -23,6 +23,8 @@ class Planner:
         The route has the least number of flights, and within routes with same number of flights, 
         arrives the earliest
         """
+        if start_city == end_city:
+            return []
         bfs_queue_of_flights = myQueue()
         end_city_best_flight = None # this will contain the best flight to arrive at the end city
         for flight in self.adj_list[start_city]:
@@ -43,11 +45,10 @@ class Planner:
                             end_city_best_flight = flight
             else:
                 for next_flight in self.adj_list[dest_city]:
-                    if next_flight.parent != None: # ek bar kisiko assign ho gaya agar to fir agli bar nahi karna padega 
-                        continue
-                    elif next_flight.departure_time >= flight.arrival_time+20 and next_flight.arrival_time <= t2:
-                        next_flight.set_parent(flight, flight.n_flights + 1)
-                        bfs_queue_of_flights.append(next_flight)
+                    if next_flight.n_flights >= flight.n_flights+1:
+                        if next_flight.departure_time >= flight.arrival_time+20 and next_flight.arrival_time <= t2:
+                            next_flight.set_parent(flight, flight.n_flights + 1)
+                            bfs_queue_of_flights.append(next_flight)
         # start making up the path
         path = []
         flight = end_city_best_flight
