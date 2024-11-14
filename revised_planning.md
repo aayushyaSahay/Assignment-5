@@ -54,7 +54,7 @@ expected_route1 = [flights[1], flights[2], flights[-1]]
 
 ---
 
-## Handling Shortest Path: What change to make?
+## Handling Shortest Path: What changes to make?
 - To minimize **cost**, use the same algorithm as before, but include **n_flights** (number of flights) as an additional parameter:
     ```python
     pqueue_for_flights = Heap(lambda x, y: (x.n_flights, x.cost_to_reach) < (y.n_flights, y.cost_to_reach))
