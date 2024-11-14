@@ -23,14 +23,14 @@ class Planner:
         The route has the least number of flights, and within routes with same number of flights, 
         arrives the earliest
         """
-        bfs_queue_of_flights = []
+        bfs_queue_of_flights = myQueue()
         end_city_best_flight = None # this will contain the best flight to arrive at the end city
         for flight in self.adj_list[start_city]:
             if flight.departure_time >= t1 and flight.arrival_time <= t2:
                 bfs_queue_of_flights.append(flight)
                 flight.set_parent(None, 0)
-        while len(bfs_queue_of_flights) > 0:
-            flight = bfs_queue_of_flights.pop(0)
+        while not bfs_queue_of_flights.is_empty():
+            flight = bfs_queue_of_flights.pop()
             dest_city = flight.end_city
             if dest_city == end_city:
                 if end_city_best_flight == None:
@@ -158,6 +158,44 @@ class Planner:
 
     
 # Utility classes:
+
+class myQueue:
+    def __init__(self, initial_capacity=10):
+        self.items = [None] * initial_capacity
+        self.size = 0
+        self.head = 0
+        self.tail = 0
+        self.capacity = initial_capacity
+
+    def append(self, item):
+        if self.size == self.capacity:
+            self._resize(self.capacity * 2)
+        self.size += 1
+        self.items[self.tail] = item
+        self.tail = (self.tail + 1) % self.capacity
+
+    def pop(self):
+        if self.size == 0:
+            return None
+        self.size -= 1
+        item = self.items[self.head]
+        self.head = (self.head + 1) % self.capacity
+        if self.size > 0 and self.size == self.capacity // 4:
+            self._resize(self.capacity // 2)
+        return item
+
+    def is_empty(self):
+        return self.size == 0
+
+    def _resize(self, new_capacity):
+        new_items = [None] * new_capacity
+        for i in range(self.size):
+            new_items[i] = self.items[(self.head + i) % self.capacity]
+        self.items = new_items
+        self.capacity = new_capacity
+        self.head = 0
+        self.tail = self.size
+
 class Heap:
     def __init__(self, comparison_function=lambda x, y: x < y, initial_elements=None):
         self.comparison_function = comparison_function
