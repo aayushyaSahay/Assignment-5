@@ -16,7 +16,15 @@ class Flight:
         self.end_city = end_city
         self.arrival_time = arrival_time
         self.fare = fare
+        self.parent = None
+        self.n_flights = float('inf')
+        self.cost_to_reach = float('inf')
         
+    def set_parent(self, parent, n_flights = float('inf'), cost_to_reach = float('inf')):
+        self.parent = parent
+        self.n_flights = n_flights
+        self.cost_to_reach = cost_to_reach
+    
 """
 If there are n flights, and m cities:
 
