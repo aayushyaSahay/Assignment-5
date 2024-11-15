@@ -70,6 +70,8 @@ class Planner:
         arrives before t2 (<=) satisfying: 
         The route is a cheapest route
         """
+        if start_city == end_city:
+            return []
         pqueue_for_flights = Heap(lambda x,y: x.cost_to_reach < y.cost_to_reach) # this will be based on a min-heap
         end_city_best_params = [None, float('inf')]
         for flight in self.adj_list[start_city]:
@@ -113,6 +115,8 @@ class Planner:
         The route has the least number of flights, and within routes with same number of flights, 
         is the cheapest
         """
+        if start_city == end_city:
+            return []
         pqueue_for_flights = Heap(lambda x, y: (x.n_flights, x.cost_to_reach) < (y.n_flights, y.cost_to_reach)) # lexicographically check karta hai
         end_city_best_params = [None, float('inf'), float('inf')]
         for flight in self.adj_list[start_city]:
